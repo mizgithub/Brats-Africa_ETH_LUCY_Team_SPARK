@@ -21,7 +21,7 @@ from batchgenerators.transforms.noise_transforms import GaussianNoiseTransform, 
 from batchgenerators.transforms.resample_transforms import SimulateLowResolutionTransform
 from batchgenerators.transforms.utility_transforms import RemoveLabelTransform, RenameTransform, NumpyToTensor
 from nnunet.training.data_augmentation.custom_transforms import Convert3DTo2DTransform, Convert2DTo3DTransform, \
-    MaskTransform, ConvertSegmentationToRegionsTransform
+    MaskTransform, ConvertSegmentationToRegionsTransform,unsharp_masking_lucy
 from nnunet.training.data_augmentation.default_data_augmentation import default_3D_augmentation_params
 from nnunet.training.data_augmentation.downsampling import DownsampleSegForDSTransform3, DownsampleSegForDSTransform2
 from nnunet.training.data_augmentation.pyramid_augmentations import MoveSegAsOneHotToData, \
@@ -43,7 +43,9 @@ def get_moreDA_augmentation(dataloader_train, dataloader_val, patch_size, params
     assert params.get('mirror') is None, "old version of params, use new keyword do_mirror"
 
     tr_transforms = []
-
+    if params.get("unsharp_masking_lucy"):
+        ## adding custom uncharp masking
+        tr_transforms.append(unsharp_masking_lucy())
     if params.get("selected_data_channels") is not None:
         tr_transforms.append(DataChannelSelectionTransform(params.get("selected_data_channels")))
 

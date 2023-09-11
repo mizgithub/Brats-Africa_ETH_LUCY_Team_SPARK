@@ -567,4 +567,4 @@ class nnUNetTrainerV2BraTSRegions_DA4_BN_BD_UNSM_LUCY(nnUNetTrainerV2BraTSRegion
         # self.loss = DC_and_BCE_loss({}, {'batch_dice': True, 'do_bg': True, 'smooth': 0})
     def setup_DA_params(self):
         nnUNetTrainerV2.setup_DA_params(self)
-        self.data_aug_params['unsharp_masking'] = True
+        self.data_aug_params['unsharp_masking_lucy'] = True
