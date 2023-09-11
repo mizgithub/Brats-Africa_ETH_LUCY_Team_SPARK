@@ -23,7 +23,8 @@ setup(name='nnunet',
             "requests",
             "nibabel", 'tifffile','axial_attention',
             "torchio",
-            "torchvision"
+            "torchvision",
+            'pillow'
       ],
       entry_points={
           'console_scripts': [
