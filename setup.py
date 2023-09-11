@@ -21,7 +21,9 @@ setup(name='nnunet',
             "SimpleITK",
             "pandas",
             "requests",
-            "nibabel", 'tifffile','axial_attention'
+            "nibabel", 'tifffile','axial_attention',
+            "torchio",
+            "torchvision"
       ],
       entry_points={
           'console_scripts': [
