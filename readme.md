@@ -8,7 +8,7 @@ This model is under-developement.
 
 * Installation
 - Get inside the folder "Brats-Africa_Eth_Lucy_tean_spark"
-    $ pip install e.
+    $ pip install e .
 * Training
 
     $ nnUNet_train 3d_fullres nnUNetTrainerV2BraTSRegions_DA4_BN_BD_UNSM_LUCY 500 <Folds> --npz
