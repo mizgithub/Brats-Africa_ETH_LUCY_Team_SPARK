@@ -24,7 +24,7 @@ setup(name='nnunet',
             "nibabel", 'tifffile','axial_attention',
             "torchio",
             "torchvision",
-            'pillow'
+            "pillow<7"
       ],
       entry_points={
           'console_scripts': [
