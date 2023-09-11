@@ -6,6 +6,12 @@ As stated on the paper "The Brain Tumor Segmentation (BraTS) Challenge 2023: Gli
 
 This model is under-developement.
 
+Installation
+Get inside the folder "Brats-Africa_Eth_Lucy_tean_spark"
+    pip install e.
+TRaining
+
+    nnUNet_train 3d_fullres nnUNetTrainerV2BraTSRegions_DA4_BN_BD_UNSM_LUCY 500 <Folds> --npz
 
 
 
