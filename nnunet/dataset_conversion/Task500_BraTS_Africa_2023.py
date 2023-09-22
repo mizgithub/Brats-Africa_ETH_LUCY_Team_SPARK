@@ -38,7 +38,7 @@ def copy_BraTS_segmentation_and_convert_labels(in_file, out_file):
     # nnUNet wants the labels to be continuous. BraTS is 0, 1, 2, 4 -> we make that into 0, 1, 2, 3
     
     img = sitk.ReadImage(in_file)
-    img_npy = sitk.GetArrayFromImage(img)
+    '''img_npy = sitk.GetArrayFromImage(img)
 
     uniques = np.unique(img_npy)
     for u in uniques:
@@ -50,9 +50,8 @@ def copy_BraTS_segmentation_and_convert_labels(in_file, out_file):
     seg_new[img_npy == 2] = 1
     seg_new[img_npy == 1] = 2
     img_corr = sitk.GetImageFromArray(seg_new)
-    img_corr.CopyInformation(img)
-    sitk.WriteImage(img_corr, out_file)
-
+    img_corr.CopyInformation(img)'''
+    sitk.WriteImage(img, out_file)
 def apply_brats_threshold(fname, out_dir, threshold, replace_with):
     img_itk = sitk.ReadImage(fname)
     img_npy = sitk.GetArrayFromImage(img_itk)
@@ -676,9 +675,9 @@ if __name__ == "__main__":
     """
 
     task_name = "Task500_BraTS2021"
-    downloaded_data_dir = "/RSNA_ASNR_MICCAI_BraTS2021_TrainingData/"
-    downloaded_data_dir_val = "/RSNA_ASNR_MICCAI_BraTS2021_ValidationData/"
-    result_dir = "/Task500_BraTS2021/"
+    downloaded_data_dir = "/content/Brats-Africa2023/data/training"
+    downloaded_data_dir_val = "/content/Brats-Africa2023/data/validation"
+    result_dir = "content/Task500_BraTSAfrica2023/"
 
     target_base = join(nnUNet_raw_data, task_name)
     target_imagesTr = join(target_base, "imagesTr")
@@ -691,112 +690,112 @@ if __name__ == "__main__":
     maybe_mkdir_p(target_imagesTs)
     maybe_mkdir_p(target_labelsTr)
 
-    # patient_names = []
-    # cur = join(downloaded_data_dir)
-    # for p in subdirs(cur, join=False):
-    #     patdir = join(cur, p)
-    #     patient_name = p
-    #     patient_names.append(patient_name)
-    #     t1 = join(patdir, p + "_t1.nii.gz")
-    #     t1c = join(patdir, p + "_t1ce.nii.gz")
-    #     t2 = join(patdir, p + "_t2.nii.gz")
-    #     flair = join(patdir, p + "_flair.nii.gz")
-    #     seg = join(patdir, p + "_seg.nii.gz")
+    patient_names = []
+    cur = join(downloaded_data_dir)
+    for p in subdirs(cur, join=False):
+        patdir = join(cur, p)
+        patient_name = p
+        patient_names.append(patient_name)
+        t1 = join(patdir, p + "-t1n.nii.gz")
+        t1c = join(patdir, p + "-t1c.nii.gz")
+        t2 = join(patdir, p + "-t2w.nii.gz")
+        flair = join(patdir, p + "-t2f.nii.gz")
+        seg = join(patdir, p + "-seg.nii.gz")
 
-    #     assert all([
-    #         isfile(t1),
-    #         isfile(t1c),
-    #         isfile(t2),
-    #         isfile(flair),
-    #         isfile(seg)
-    #     ]), "%s" % patient_name
+        assert all([
+            isfile(t1),
+            isfile(t1c),
+            isfile(t2),
+            isfile(flair),
+            isfile(seg)
+        ]), "%s" % patient_name
 
-    #     shutil.copy(t1, join(target_imagesTr, patient_name + "_0000.nii.gz"))
-    #     shutil.copy(t1c, join(target_imagesTr, patient_name + "_0001.nii.gz"))
-    #     shutil.copy(t2, join(target_imagesTr, patient_name + "_0002.nii.gz"))
-    #     shutil.copy(flair, join(target_imagesTr, patient_name + "_0003.nii.gz"))
+        shutil.copy(t1, join(target_imagesTr, patient_name + "_0000.nii.gz"))
+        shutil.copy(t1c, join(target_imagesTr, patient_name + "_0001.nii.gz"))
+        shutil.copy(t2, join(target_imagesTr, patient_name + "_0002.nii.gz"))
+        shutil.copy(flair, join(target_imagesTr, patient_name + "_0003.nii.gz"))
 
-    #     copy_BraTS_segmentation_and_convert_labels(seg, join(target_labelsTr, patient_name + ".nii.gz"))
-
-
-    # json_dict = OrderedDict()
-    # json_dict['name'] = "BraTS2021"
-    # json_dict['description'] = "nothing"
-    # json_dict['tensorImageSize'] = "4D"
-    # json_dict['reference'] = "see BraTS2021"
-    # json_dict['licence'] = "see BraTS2021 license"
-    # json_dict['release'] = "0.0"
-    # json_dict['modality'] = {
-    #     "0": "T1",
-    #     "1": "T1ce",
-    #     "2": "T2",
-    #     "3": "FLAIR"
-    # }
-    # json_dict['labels'] = {
-    #     "0": "bg",
-    #     "1": "ncr",
-    #     "2": "ed",
-    #     "3": "et",
-    # }
-    # json_dict['numTraining'] = len(patient_names)
-    # json_dict['numTest'] = 0
-    # json_dict['training'] = [{'image': "./imagesTr/%s.nii.gz" % i, "label": "./labelsTr/%s.nii.gz" % i} for i in
-    #                          patient_names]
-    # json_dict['test'] = []
-
-    # save_json(json_dict, join(target_base, "dataset.json"))
-
-    # if downloaded_data_dir_val is not None:
-    #     for p in subdirs(downloaded_data_dir_val, join=False):
-    #         patdir = join(downloaded_data_dir_val, p)
-    #         patient_name = p
-    #         t1 = join(patdir, p + "_t1.nii.gz")
-    #         t1c = join(patdir, p + "_t1ce.nii.gz")
-    #         t2 = join(patdir, p + "_t2.nii.gz")
-    #         flair = join(patdir, p + "_flair.nii.gz")
-
-    #         assert all([
-    #             isfile(t1),
-    #             isfile(t1c),
-    #             isfile(t2),
-    #             isfile(flair),
-    #         ]), "%s" % patient_name
-
-    #         shutil.copy(t1, join(target_imagesVal, patient_name + "_0000.nii.gz"))
-    #         shutil.copy(t1c, join(target_imagesVal, patient_name + "_0001.nii.gz"))
-    #         shutil.copy(t2, join(target_imagesVal, patient_name + "_0002.nii.gz"))
-    #         shutil.copy(flair, join(target_imagesVal, patient_name + "_0003.nii.gz"))
+        copy_BraTS_segmentation_and_convert_labels(seg, join(target_labelsTr, patient_name + ".nii.gz"))
 
 
-    # downloaded_data_dir_test = ""
+    json_dict = OrderedDict()
+    json_dict['name'] = "BraTSAfrica2023"
+    json_dict['description'] = "nothing"
+    json_dict['tensorImageSize'] = "4D"
+    json_dict['reference'] = "see BraTSAfrica2023"
+    json_dict['licence'] = "see BraTSAfrica2023 license"
+    json_dict['release'] = "0.0"
+    json_dict['modality'] = {
+        "0": "T1",
+        "1": "T1ce",
+        "2": "T2",
+        "3": "FLAIR"
+    }
+    json_dict['labels'] = {
+        "0": "bg",
+        "1": "ncr",
+        "2": "ed",
+        "3": "et",
+    }
+    json_dict['numTraining'] = len(patient_names)
+    json_dict['numTest'] = 0
+    json_dict['training'] = [{'image': "./imagesTr/%s.nii.gz" % i, "label": "./labelsTr/%s.nii.gz" % i} for i in
+                             patient_names]
+    json_dict['test'] = []
 
-    # if isdir(downloaded_data_dir_test):
-    #     for p in subdirs(downloaded_data_dir_test, join=False):
-    #         patdir = join(downloaded_data_dir_test, p)
-    #         patient_name = p
-    #         t1 = join(patdir, p + "_t1.nii.gz")
-    #         t1c = join(patdir, p + "_t1ce.nii.gz")
-    #         t2 = join(patdir, p + "_t2.nii.gz")
-    #         flair = join(patdir, p + "_flair.nii.gz")
+    save_json(json_dict, join(target_base, "dataset.json"))
 
-    #         assert all([
-    #             isfile(t1),
-    #             isfile(t1c),
-    #             isfile(t2),
-    #             isfile(flair),
-    #         ]), "%s" % patient_name
+    if downloaded_data_dir_val is not None:
+        for p in subdirs(downloaded_data_dir_val, join=False):
+            patdir = join(downloaded_data_dir_val, p)
+            patient_name = p
+            t1 = join(patdir, p + "-t1n.nii.gz")
+            t1c = join(patdir, p + "-t1c.nii.gz")
+            t2 = join(patdir, p + "-t2w.nii.gz")
+            flair = join(patdir, p + "-t2f.nii.gz")
 
-    #         shutil.copy(t1, join(target_imagesTs, patient_name + "_0000.nii.gz"))
-    #         shutil.copy(t1c, join(target_imagesTs, patient_name + "_0001.nii.gz"))
-    #         shutil.copy(t2, join(target_imagesTs, patient_name + "_0002.nii.gz"))
-    #         shutil.copy(flair, join(target_imagesTs, patient_name + "_0003.nii.gz"))
+            assert all([
+                isfile(t1),
+                isfile(t1c),
+                isfile(t2),
+                isfile(flair),
+            ]), "%s" % patient_name
 
-    # test set
-    #  nnUNet_ensemble -f nnUNetTrainerV2BraTSRegions_DA3_BN_BD__nnUNetPlansv2.1_bs5_5fold nnUNetTrainerV2BraTSRegions_DA4_BN_BD__nnUNetPlansv2.1_bs5_5fold nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5_15fold -o ensembled_nnUNetTrainerV2BraTSRegions_DA3_BN_BD__nnUNetPlansv2.1_bs5_5fold__nnUNetTrainerV2BraTSRegions_DA4_BN_BD__nnUNetPlansv2.1_bs5_5fold__nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5_15fold
-    # apply_threshold_to_folder(join(result_dir,'BL_largeUNet_GN_ensemble'), join(result_dir,'BL_largeUNet_GN_ensemble_PP200'), 200, 2)
-    # convert_labels_back_to_BraTS_2018_2019_convention(join(result_dir,'BL_largeUNet_GN_ensemble_PP200'), join(result_dir,'BL_largeUNet_GN_ensemble_PP200_converted'))
+            shutil.copy(t1, join(target_imagesVal, patient_name + "_0000.nii.gz"))
+            shutil.copy(t1c, join(target_imagesVal, patient_name + "_0001.nii.gz"))
+            shutil.copy(t2, join(target_imagesVal, patient_name + "_0002.nii.gz"))
+            shutil.copy(flair, join(target_imagesVal, patient_name + "_0003.nii.gz"))
+
+
+   # downloaded_data_dir_test = "./RSNA_test"
+
+    #if isdir(downloaded_data_dir_test):
+     #   for p in subdirs(downloaded_data_dir_test, join=False):
+       #     patdir = join(downloaded_data_dir_test, p)
+      #      patient_name = p
+        #    t1 = join(patdir, p + "_t1.nii.gz")
+         #   t1c = join(patdir, p + "_t1ce.nii.gz")
+          #  t2 = join(patdir, p + "_t2.nii.gz")
+           # flair = join(patdir, p + "_flair.nii.gz")
+
+#            assert all([
+ #               isfile(t1),
+  #              isfile(t1c),
+   #             isfile(t2),
+    #            isfile(flair),
+     #       ]), "%s" % patient_name
+
+      #      shutil.copy(t1, join(target_imagesTs, patient_name + "_0000.nii.gz"))
+       #     shutil.copy(t1c, join(target_imagesTs, patient_name + "_0001.nii.gz"))
+        #    shutil.copy(t2, join(target_imagesTs, patient_name + "_0002.nii.gz"))
+         #   shutil.copy(flair, join(target_imagesTs, patient_name + "_0003.nii.gz"))
+
+   # test set
+    # nnUNet_ensemble -f nnUNetTrainerV2BraTSRegions_DA3_BN_BD__nnUNetPlansv2.1_bs5_5fold nnUNetTrainerV2BraTSRegions_DA4_BN_BD__nnUNetPlansv2.1_bs5_5fold nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5_15fold -o ensembled_nnUNetTrainerV2BraTSRegions_DA3_BN_BD__nnUNetPlansv2.1_bs5_5fold__nnUNetTrainerV2BraTSRegions_DA4_BN_BD__nnUNetPlansv2.1_bs5_5fold__nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5_15fold
+    #apply_threshold_to_folder(join(result_dir,'BL_largeUNet_GN_ensemble'), join(result_dir,'BL_largeUNet_GN_ensemble_PP200'), 200, 2)
+    #convert_labels_back_to_BraTS_2018_2019_convention(join(result_dir,'BL_largeUNet_GN_ensemble_PP200'), join(result_dir,'BL_largeUNet_GN_ensemble_PP200_converted'))
     #my_rank_then_aggregate_on_validation_result()
-    my_evaluate_folder('/BL_BL_L_GN_ensemble_fold0/')
+    #my_evaluate_folder('/BL_BL_L_GN_ensemble_fold0/')
 
     # export for publication of weights
     # nnUNet_export_model_to_zip -tr nnUNetTrainerV2BraTSRegions_DA4_BN -pl nnUNetPlansv2.1_bs5 -f 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 -t 82 -o nnUNetTrainerV2BraTSRegions_DA4_BN__nnUNetPlansv2.1_bs5_15fold.zip --disable_strict
