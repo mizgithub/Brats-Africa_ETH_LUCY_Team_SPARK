@@ -23,11 +23,7 @@ def main():
         shutil.copy(join(input_folder, p), join(tmp_input_folder, patient_id + "_" + contrast_to_number[contrast] + ".nii.gz"))
 
     #run nnunet inference
-    tmp_output_folder_BL = join(tmp_output_folder,'raw_output_1')
-    tmp_output_folder_BL_L_GN = join(tmp_output_folder,'raw_output_2')
-    tmp_output_folder_ensemble = join(tmp_output_folder,'ensemble')
     os.system("nnUNet_predict -i {} -o {} -t 500 -m 3d_fullres -tr nnUNetTrainerV2BraTSRegions_DA4_BN_BD_UNSM_LUCY --save_npz".format(tmp_input_folder, tmp_output_folder_BL))
-    apply_threshold_to_folder(tmp_output_folder_ensemble, join(tmp_output_folder, 'pp_output'), 200, 2)
     convert_labels_back_to_BraTS_2018_2019_convention(join(tmp_output_folder,'pp_output'), join(tmp_output_folder,'pp_output_converted'))
 
     for p in subfiles(join(tmp_output_folder,'pp_output_converted'), join=False):
