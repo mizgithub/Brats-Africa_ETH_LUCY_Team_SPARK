@@ -21,6 +21,7 @@ from torch import nn
 
 from nnunet.evaluation.region_based_evaluation import evaluate_regions, get_brats_regions
 from nnunet.network_architecture.generic_UNet import Generic_UNet, Axial_UNet
+from nnunet.network_architecture.simplified_UNet import SimplifiedUNet_LUCY
 from nnunet.network_architecture.initialization import InitWeights_He
 from nnunet.network_architecture.neural_network import SegmentationNetwork
 from nnunet.training.data_augmentation.default_data_augmentation import default_3D_augmentation_params, \
@@ -172,7 +173,7 @@ class nnUNetTrainerV2BraTSRegions_DA3(nnUNetTrainerV2BraTSRegions_DA3_BN):
         dropout_op_kwargs = {'p': 0, 'inplace': True}
         net_nonlin = nn.LeakyReLU
         net_nonlin_kwargs = {'negative_slope': 1e-2, 'inplace': True}
-        self.network = Generic_UNet(self.num_input_channels, self.base_num_features, self.num_classes,
+        self.network = SimplifiedUNet_LUCY(self.num_input_channels, self.base_num_features, self.num_classes,
                                     len(self.net_num_pool_op_kernel_sizes),
                                     self.conv_per_stage, 2, conv_op, norm_op, norm_op_kwargs, dropout_op,
                                     dropout_op_kwargs,
