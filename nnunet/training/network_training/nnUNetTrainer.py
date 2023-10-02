@@ -28,6 +28,7 @@ from nnunet.configuration import default_num_threads
 from nnunet.evaluation.evaluator import aggregate_scores
 from nnunet.inference.segmentation_export import save_segmentation_nifti_from_softmax
 from nnunet.network_architecture.generic_UNet import Generic_UNet
+from nnunet.network_architecture.simplified_UNet import SimplifiedUNet_LUCY
 from nnunet.network_architecture.initialization import InitWeights_He
 from nnunet.network_architecture.neural_network import SegmentationNetwork
 from nnunet.postprocessing.connected_components import determine_postprocessing
@@ -252,7 +253,7 @@ class nnUNetTrainer(NetworkTrainer):
         dropout_op_kwargs = {'p': 0, 'inplace': True}
         net_nonlin = nn.LeakyReLU
         net_nonlin_kwargs = {'negative_slope': 1e-2, 'inplace': True}
-        self.network = Generic_UNet(self.num_input_channels, self.base_num_features, self.num_classes, net_numpool,
+        self.network = SimplifiedUNet_LUCY(self.num_input_channels, self.base_num_features, self.num_classes, net_numpool,
                                     self.conv_per_stage, 2, conv_op, norm_op, norm_op_kwargs, dropout_op,
                                     dropout_op_kwargs,
                                     net_nonlin, net_nonlin_kwargs, False, False, lambda x: x, InitWeights_He(1e-2),
