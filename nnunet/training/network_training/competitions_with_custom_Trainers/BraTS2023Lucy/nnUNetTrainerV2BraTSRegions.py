@@ -23,8 +23,6 @@ from torch import nn
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.nn.utils import clip_grad_norm_
 from nnunet.training.data_augmentation.default_data_augmentation import default_3D_augmentation_params, default_2D_augmentation_params, get_patch_size
-from nnunet.training.data_augmentation.data_augmentation_minimal import default_3D_augmentation_params, default_2D_augmentation_params, get_patch_size
-
 from nnunet.evaluation.region_based_evaluation import evaluate_regions, get_brats_regions
 from nnunet.network_architecture.generic_UNet import Generic_UNet
 from nnunet.network_architecture.initialization import InitWeights_He
