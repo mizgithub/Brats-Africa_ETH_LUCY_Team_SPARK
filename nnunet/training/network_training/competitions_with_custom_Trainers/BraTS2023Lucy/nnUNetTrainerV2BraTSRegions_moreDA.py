@@ -561,11 +561,6 @@ class nnUNetTrainerV2BraTSRegions_DA4_GN_BD_XL_dropout50_two_last_levels_Unet(nn
         self.network.inference_apply_nonlin = nn.Sigmoid()
 ## Trainer for Brats-Africa with added custom unsharoo masking augmentation
 class nnUNetTrainerV2BraTSRegions_DA4_BN_BD_UNSM_LUCY(nnUNetTrainerV2BraTSRegions_BN_lucy_small_nnunet):
-    def __init__(self, plans_file, fold, output_folder=None, dataset_directory=None, batch_dice=True, stage=None,
-                 unpack_data=True, deterministic=True, fp16=False):
-        super().__init__(plans_file, fold, output_folder, dataset_directory, batch_dice, stage, unpack_data,
-                         deterministic, fp16)
-        # self.loss = DC_and_BCE_loss({}, {'batch_dice': True, 'do_bg': True, 'smooth': 0})
-    def setup_DA_params(self):
+   def setup_DA_params(self):
         nnUNetTrainerV2.setup_DA_params(self)
         self.data_aug_params['unsharp_masking_lucy'] = True
