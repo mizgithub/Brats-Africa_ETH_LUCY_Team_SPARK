@@ -147,7 +147,7 @@ def get_minimal_augmentation(dataloader_train, dataloader_val, patch_size, param
         patch_size_spatial = patch_size
 
     tr_transforms.append(SpatialTransform(
-        patch_size_spatial, 
+        # patch_size_spatial, 
         #patch_center_dist_from_border=None,
         #do_elastic_deform=params.get("do_elastic"),
         #alpha=params.get("elastic_deform_alpha"),
