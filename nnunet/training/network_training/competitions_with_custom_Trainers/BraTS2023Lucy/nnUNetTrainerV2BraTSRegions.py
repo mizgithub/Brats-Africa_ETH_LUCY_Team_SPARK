@@ -87,7 +87,9 @@ class nnUNetTrainerV2BraTSRegions_BN_lucy_small_nnunet(nnUNetTrainerV2):
         if torch.cuda.is_available():
             self.network.cuda()
         self.network.inference_apply_nonlin = torch.nn.Softmax(1)
-        
+    def setup_DA_params(self):
+        nnUNetTrainerV2.setup_DA_params(self)
+        self.data_aug_params['unsharp_masking_lucy'] = True
 
 
 class nnUNetTrainerV2BraTSRegions(nnUNetTrainerV2):
