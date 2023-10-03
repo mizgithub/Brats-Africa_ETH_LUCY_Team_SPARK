@@ -36,10 +36,10 @@ default_3D_augmentation_params = {
     "selected_data_channels": None,
     "selected_seg_channels": None,
 
-    "do_elastic": True,
-    "elastic_deform_alpha": (0., 900.),
-    "elastic_deform_sigma": (9., 13.),
-    "p_eldef": 0.2,
+    # "do_elastic": True,
+    # "elastic_deform_alpha": (0., 900.),
+    # "elastic_deform_sigma": (9., 13.),
+    # "p_eldef": 0.2,
 
     "do_scaling": True,
     "scale_range": (0.85, 1.25),
@@ -54,30 +54,30 @@ default_3D_augmentation_params = {
     "rotation_p_per_axis": 1,
     "p_rot": 0.2,
 
-    "random_crop": False,
-    "random_crop_dist_to_border": None,
+    # "random_crop": False,
+    # "random_crop_dist_to_border": None,
 
-    "do_gamma": True,
-    "gamma_retain_stats": True,
-    "gamma_range": (0.7, 1.5),
-    "p_gamma": 0.3,
+    # "do_gamma": True,
+    # "gamma_retain_stats": True,
+    # "gamma_range": (0.7, 1.5),
+    # "p_gamma": 0.3,
 
-    "do_mirror": True,
-    "mirror_axes": (0, 1, 2),
+    # "do_mirror": True,
+    # "mirror_axes": (0, 1, 2),
 
-    "dummy_2D": False,
-    "mask_was_used_for_normalization": None,
-    "border_mode_data": "constant",
+    # "dummy_2D": False,
+    # "mask_was_used_for_normalization": None,
+    # "border_mode_data": "constant",
 
-    "all_segmentation_labels": None,  # used for cascade
-    "move_last_seg_chanel_to_data": False,  # used for cascade
-    "cascade_do_cascade_augmentations": False,  # used for cascade
-    "cascade_random_binary_transform_p": 0.4,
-    "cascade_random_binary_transform_p_per_label": 1,
-    "cascade_random_binary_transform_size": (1, 8),
-    "cascade_remove_conn_comp_p": 0.2,
-    "cascade_remove_conn_comp_max_size_percent_threshold": 0.15,
-    "cascade_remove_conn_comp_fill_with_other_class_p": 0.0,
+    # "all_segmentation_labels": None,  # used for cascade
+    # "move_last_seg_chanel_to_data": False,  # used for cascade
+    # "cascade_do_cascade_augmentations": False,  # used for cascade
+    # "cascade_random_binary_transform_p": 0.4,
+    # "cascade_random_binary_transform_p_per_label": 1,
+    # "cascade_random_binary_transform_size": (1, 8),
+    # "cascade_remove_conn_comp_p": 0.2,
+    # "cascade_remove_conn_comp_max_size_percent_threshold": 0.15,
+    # "cascade_remove_conn_comp_fill_with_other_class_p": 0.0,
 
     "do_additive_brightness": False,
     "additive_brightness_p_per_sample": 0.15,
@@ -91,8 +91,8 @@ default_3D_augmentation_params = {
 
 default_2D_augmentation_params = deepcopy(default_3D_augmentation_params)
 
-default_2D_augmentation_params["elastic_deform_alpha"] = (0., 200.)
-default_2D_augmentation_params["elastic_deform_sigma"] = (9., 13.)
+# default_2D_augmentation_params["elastic_deform_alpha"] = (0., 200.)
+# default_2D_augmentation_params["elastic_deform_sigma"] = (9., 13.)
 default_2D_augmentation_params["rotation_x"] = (-180. / 360 * 2. * np.pi, 180. / 360 * 2. * np.pi)
 default_2D_augmentation_params["rotation_y"] = (-0. / 360 * 2. * np.pi, 0. / 360 * 2. * np.pi)
 default_2D_augmentation_params["rotation_z"] = (-0. / 360 * 2. * np.pi, 0. / 360 * 2. * np.pi)
@@ -100,8 +100,8 @@ default_2D_augmentation_params["rotation_z"] = (-0. / 360 * 2. * np.pi, 0. / 360
 # sometimes you have 3d data and a 3d net but cannot augment them properly in 3d due to anisotropy (which is currently
 # not supported in batchgenerators). In that case you can 'cheat' and transfer your 3d data into 2d data and
 # transform them back after augmentation
-default_2D_augmentation_params["dummy_2D"] = False
-default_2D_augmentation_params["mirror_axes"] = (0, 1)  # this can be (0, 1, 2) if dummy_2D=True
+# default_2D_augmentation_params["dummy_2D"] = False
+# default_2D_augmentation_params["mirror_axes"] = (0, 1)  # this can be (0, 1, 2) if dummy_2D=True
 
 
 def get_patch_size(final_patch_size, rot_x, rot_y, rot_z, scale_range):
@@ -127,7 +127,7 @@ def get_patch_size(final_patch_size, rot_x, rot_y, rot_z, scale_range):
     return final_shape.astype(int)
 
 
-def get_default_augmentation(dataloader_train, dataloader_val, patch_size, params=default_3D_augmentation_params,
+def get_minimal_augmentation(dataloader_train, dataloader_val, patch_size, params=default_3D_augmentation_params,
                              border_val_seg=-1, pin_memory=True,
                              seeds_train=None, seeds_val=None, regions=None):
     assert params.get('mirror') is None, "old version of params, use new keyword do_mirror"
