@@ -32,7 +32,7 @@ from nnunet.training.loss_functions.dice_loss import DC_and_BCE_loss, get_tp_fp_
 from nnunet.training.network_training.nnUNetTrainerV2 import nnUNetTrainerV2
 from nnunet.training.network_training.nnUNet_variants.data_augmentation.nnUNetTrainerV2_DA3 import \
     nnUNetTrainerV2_DA3_BN
-
+from nnunet.training.network_training.competitions_with_custom_Trainers.BraTS2023Lucy.nnUNetTrainerV2BraTSRegions import nnUNetTrainerV2BraTSRegions_BN_lucy_small_nnunet
 
 class nnUNetTrainerV2BraTSRegions_DA3_BN(nnUNetTrainerV2_DA3_BN):
     def __init__(self, plans_file, fold, output_folder=None, dataset_directory=None, batch_dice=True, stage=None,
@@ -173,7 +173,7 @@ class nnUNetTrainerV2BraTSRegions_DA3(nnUNetTrainerV2BraTSRegions_DA3_BN):
         dropout_op_kwargs = {'p': 0, 'inplace': True}
         net_nonlin = nn.LeakyReLU
         net_nonlin_kwargs = {'negative_slope': 1e-2, 'inplace': True}
-        self.network = SimplifiedUNet_LUCY(self.num_input_channels, self.base_num_features, self.num_classes,
+        self.network = Generic_UNet(self.num_input_channels, self.base_num_features, self.num_classes,
                                     len(self.net_num_pool_op_kernel_sizes),
                                     self.conv_per_stage, 2, conv_op, norm_op, norm_op_kwargs, dropout_op,
                                     dropout_op_kwargs,
@@ -560,7 +560,7 @@ class nnUNetTrainerV2BraTSRegions_DA4_GN_BD_XL_dropout50_two_last_levels_Unet(nn
             self.network.cuda()
         self.network.inference_apply_nonlin = nn.Sigmoid()
 ## Trainer for Brats-Africa with added custom unsharoo masking augmentation
-class nnUNetTrainerV2BraTSRegions_DA4_BN_BD_UNSM_LUCY(nnUNetTrainerV2BraTSRegions_DA4_BN_BD):
+class nnUNetTrainerV2BraTSRegions_DA4_BN_BD_UNSM_LUCY(nnUNetTrainerV2BraTSRegions_BN_lucy_small_nnunet):
     def __init__(self, plans_file, fold, output_folder=None, dataset_directory=None, batch_dice=True, stage=None,
                  unpack_data=True, deterministic=True, fp16=False):
         super().__init__(plans_file, fold, output_folder, dataset_directory, batch_dice, stage, unpack_data,
