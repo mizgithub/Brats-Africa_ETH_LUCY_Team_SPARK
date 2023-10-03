@@ -33,6 +33,7 @@ from nnunet.training.dataloading.dataset_loading import unpack_dataset
 from nnunet.training.loss_functions.deep_supervision import MultipleOutputLoss2
 from nnunet.training.loss_functions.dice_loss import DC_and_BCE_loss, get_tp_fp_fn_tn, SoftDiceLoss
 from nnunet.training.network_training.nnUNetTrainerV2 import nnUNetTrainerV2
+from nnunet.training.network_training.nnUNet_variants.data_augmentation.nnUNetTrainerV2_minimal_DA import nnUNetTrainerV2_Minimal_DataAugmentation
 from nnunet.training.network_training.nnUNetTrainerV2_DDP import nnUNetTrainerV2_DDP
 from nnunet.utilities.distributed import awesome_allgather_function
 from nnunet.utilities.to_torch import maybe_to_torch, to_cuda
@@ -64,7 +65,7 @@ class nnUNetTrainerV2BraTSRegions_BN(nnUNetTrainerV2):
             self.network.cuda()
         self.network.inference_apply_nonlin = torch.nn.Softmax(1)
 
-class nnUNetTrainerV2BraTSRegions_BN_lucy_small_nnunet(nnUNetTrainerV2):
+class nnUNetTrainerV2BraTSRegions_BN_lucy_small_nnunet(nnUNetTrainerV2_Minimal_DataAugmentation):
     def initialize_network(self):
         if self.threeD:
             conv_op = nn.Conv3d
@@ -89,45 +90,7 @@ class nnUNetTrainerV2BraTSRegions_BN_lucy_small_nnunet(nnUNetTrainerV2):
         if torch.cuda.is_available():
             self.network.cuda()
         self.network.inference_apply_nonlin = torch.nn.Softmax(1)
-    def setup_DA_params(self):
-        super().setup_DA_params()
-        self.deep_supervision_scales = [[1, 1, 1]] + list(list(i) for i in 1 / np.cumprod(
-            np.vstack(self.net_num_pool_op_kernel_sizes), axis=0))[:-1]
 
-        if self.threeD:
-            self.data_aug_params['unsharp_masking_lucy'] = True
-            self.data_aug_params = default_3D_augmentation_params
-            self.data_aug_params['rotation_x'] = (-30. / 360 * 2. * np.pi, 30. / 360 * 2. * np.pi)
-            self.data_aug_params['rotation_y'] = (-30. / 360 * 2. * np.pi, 30. / 360 * 2. * np.pi)
-            self.data_aug_params['rotation_z'] = (-30. / 360 * 2. * np.pi, 30. / 360 * 2. * np.pi)
-            if self.do_dummy_2D_aug:
-                self.data_aug_params["dummy_2D"] = True
-                self.print_to_log_file("Using dummy2d data augmentation")
-                self.data_aug_params["elastic_deform_alpha"] = \
-                    default_2D_augmentation_params["elastic_deform_alpha"]
-                self.data_aug_params["elastic_deform_sigma"] = \
-                    default_2D_augmentation_params["elastic_deform_sigma"]
-                self.data_aug_params["rotation_x"] = default_2D_augmentation_params["rotation_x"]
-        else:
-            self.do_dummy_2D_aug = False
-            if max(self.patch_size) / min(self.patch_size) > 1.5:
-                default_2D_augmentation_params['rotation_x'] = (-180. / 360 * 2. * np.pi, 180. / 360 * 2. * np.pi)
-            self.data_aug_params = default_2D_augmentation_params
-        self.data_aug_params["mask_was_used_for_normalization"] = self.use_mask_for_norm
-
-        if self.do_dummy_2D_aug:
-            self.basic_generator_patch_size = get_patch_size(self.patch_size[1:],
-                                                             self.data_aug_params['rotation_x'],
-                                                             self.data_aug_params['rotation_y'],
-                                                             self.data_aug_params['rotation_z'],
-                                                             self.data_aug_params['scale_range'])
-            self.basic_generator_patch_size = np.array([self.patch_size[0]] + list(self.basic_generator_patch_size))
-        else:
-            self.basic_generator_patch_size = get_patch_size(self.patch_size, self.data_aug_params['rotation_x'],
-                                                             self.data_aug_params['rotation_y'],
-                                                             self.data_aug_params['rotation_z'],
-                                                             self.data_aug_params['scale_range'])
-        
 
 class nnUNetTrainerV2BraTSRegions(nnUNetTrainerV2):
     def __init__(self, plans_file, fold, output_folder=None, dataset_directory=None, batch_dice=True, stage=None,
