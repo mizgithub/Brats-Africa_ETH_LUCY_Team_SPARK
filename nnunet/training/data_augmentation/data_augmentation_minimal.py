@@ -60,10 +60,13 @@ def get_minimal_augmentation(dataloader_train, dataloader_val, params=default_3D
     tr_transforms.append(NumpyToTensor(['data', 'target'], 'float'))
 
     tr_transforms = Compose(tr_transforms)
-
+    
+    # batchgenerator_train = MultiThreadedAugmenter(dataloader_train, tr_transforms, params.get('num_threads'),
+    #                                               params.get("num_cached_per_thread"),
+    #                                               seeds=range(params.get('num_threads')), pin_memory=pin_memory)
     batchgenerator_train = MultiThreadedAugmenter(dataloader_train, tr_transforms, params.get('num_threads'),
-                                                  params.get("num_cached_per_thread"),
-                                                  seeds=range(params.get('num_threads')), pin_memory=pin_memory)
+                                                      params.get("num_cached_per_thread"),
+                                                     pin_memory=pin_memory)
     batchgenerator_train.restart()
 
     val_transforms = []
@@ -89,10 +92,13 @@ def get_minimal_augmentation(dataloader_train, dataloader_val, params=default_3D
     val_transforms.append(NumpyToTensor(['data', 'target'], 'float'))
     val_transforms = Compose(val_transforms)
 
-    batchgenerator_val = MultiThreadedAugmenter(dataloader_val, val_transforms, max(params.get('num_threads') // 2, 1),
-                                                params.get("num_cached_per_thread"),
-                                                seeds=range(max(params.get('num_threads') // 2, 1)),
-                                                pin_memory=pin_memory)
+    # batchgenerator_val = MultiThreadedAugmenter(dataloader_val, val_transforms, max(params.get('num_threads') // 2, 1),
+    #                                             params.get("num_cached_per_thread"),
+    #                                             seeds=range(max(params.get('num_threads') // 2, 1)),
+    #                                             pin_memory=pin_memory)
+    batchgenerator_val = MultiThreadedAugmenter(dataloader_val, val_transforms, params.get('num_threads'),
+                                                      params.get("num_cached_per_thread"),
+                                                     pin_memory=pin_memory)
     batchgenerator_val.restart()
     return batchgenerator_train, batchgenerator_val
 
