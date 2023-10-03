@@ -87,10 +87,11 @@ class nnUNetTrainerV2BraTSRegions_BN_lucy_small_nnunet(nnUNetTrainerV2):
         if torch.cuda.is_available():
             self.network.cuda()
         self.network.inference_apply_nonlin = torch.nn.Softmax(1)
-    def setup_DA_params(self):
-        nnUNetTrainerV2.setup_DA_params(self)
+    def initialize(self, training=True, force_load_plans=False): 
+        self.setup_DA_params()
         self.data_aug_params['unsharp_masking_lucy'] = True
-
+        nnUNetTrainerV2.setup_DA_params(self)
+        
 
 class nnUNetTrainerV2BraTSRegions(nnUNetTrainerV2):
     def __init__(self, plans_file, fold, output_folder=None, dataset_directory=None, batch_dice=True, stage=None,
