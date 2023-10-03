@@ -44,7 +44,8 @@ def get_moreDA_augmentation(dataloader_train, dataloader_val, patch_size, params
 
     tr_transforms = []
     if params.get("unsharp_masking_lucy"):
-        ## adding custom uncharp masking
+        ## adding custom unsharp masking
+        print("Unsharp masking is being used")
         tr_transforms.append(unsharp_masking_lucy())
     if params.get("selected_data_channels") is not None:
         tr_transforms.append(DataChannelSelectionTransform(params.get("selected_data_channels")))

@@ -125,30 +125,6 @@ class nnUNetTrainerV2BraTSRegions_BN_lucy_small_nnunet(nnUNetTrainerV2):
                                                              self.data_aug_params['rotation_y'],
                                                              self.data_aug_params['rotation_z'],
                                                              self.data_aug_params['scale_range'])
-
-        self.data_aug_params['selected_seg_channels'] = [0]
-        self.data_aug_params['patch_size_for_spatialtransform'] = self.patch_size
-
-        self.data_aug_params["p_rot"] = 0.3
-
-        self.data_aug_params["scale_range"] = (0.65, 1.6)
-        self.data_aug_params["p_scale"] = 0.3
-        self.data_aug_params["independent_scale_factor_for_each_axis"] = True
-        self.data_aug_params["p_independent_scale_per_axis"] = 0.3
-
-        self.data_aug_params["do_elastic"] = True
-        self.data_aug_params["p_eldef"] = 0.3
-        self.data_aug_params["eldef_deformation_scale"] = (0, 0.25)
-
-        self.data_aug_params["do_additive_brightness"] = True
-        self.data_aug_params["additive_brightness_mu"] = 0
-        self.data_aug_params["additive_brightness_sigma"] = 0.2
-        self.data_aug_params["additive_brightness_p_per_sample"] = 0.3
-        self.data_aug_params["additive_brightness_p_per_channel"] = 1
-
-        self.data_aug_params['gamma_range'] = (0.5, 1.6)
-
-        self.data_aug_params['num_cached_per_thread'] = 4
         
 
 class nnUNetTrainerV2BraTSRegions(nnUNetTrainerV2):
