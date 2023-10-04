@@ -35,7 +35,7 @@ from nnunet.training.network_training.nnUNet_variants.data_augmentation.nnUNetTr
 from nnunet.training.network_training.nnUNetTrainerV2_DDP import nnUNetTrainerV2_DDP
 from nnunet.utilities.distributed import awesome_allgather_function
 from nnunet.utilities.to_torch import maybe_to_torch, to_cuda
-
+from nnunet.network_architecture.generic_UNet_half import Generic_Half_UNet
 
 class nnUNetTrainerV2BraTSRegions_BN(nnUNetTrainerV2):
     def initialize_network(self):
@@ -79,7 +79,7 @@ class nnUNetTrainerV2BraTSRegions_BN_lucy_small_nnunet(nnUNetTrainerV2_Minimal_D
         dropout_op_kwargs = {'p': 0, 'inplace': True}
         net_nonlin = nn.LeakyReLU
         net_nonlin_kwargs = {'negative_slope': 1e-2, 'inplace': True}
-        self.network = Generic_UNet(self.num_input_channels, self.base_num_features, self.num_classes,
+        self.network = Generic_Half_UNet(self.num_input_channels, self.base_num_features, self.num_classes,
                                     len(self.net_num_pool_op_kernel_sizes),
                                     self.conv_per_stage, 2, conv_op, norm_op, norm_op_kwargs, dropout_op,
                                     dropout_op_kwargs,
