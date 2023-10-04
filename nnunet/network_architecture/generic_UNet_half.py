@@ -280,7 +280,7 @@ class Generic_Half_UNet(SegmentationNetwork):
         output_features = base_num_features*encoder_scale
         input_features = input_channels
 
-        for d in range(int(num_pool)/2): ## miminizing by half
+        for d in range(int(num_pool/2)): ## miminizing by half
             # determine the first stride
             if d != 0 and self.convolutional_pooling:
                 first_stride = pool_op_kernel_sizes[d - 1]
