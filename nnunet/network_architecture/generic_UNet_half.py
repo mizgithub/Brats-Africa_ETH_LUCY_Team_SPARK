@@ -205,7 +205,7 @@ class Generic_Half_UNet(SegmentationNetwork):
 
         Questions? -> f.isensee@dkfz.de
         """
-        super(Generic_UNet, self).__init__()
+        super(Generic_Half_UNet, self).__init__()
         self.convolutional_upsampling = convolutional_upsampling
         self.convolutional_pooling = convolutional_pooling
         self.upscale_logits = upscale_logits
