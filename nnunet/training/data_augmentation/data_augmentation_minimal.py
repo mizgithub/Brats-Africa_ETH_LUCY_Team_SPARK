@@ -67,7 +67,7 @@ def get_minimal_augmentation(dataloader_train, dataloader_val, params=default_3D
     batchgenerator_train = MultiThreadedAugmenter(dataloader_train, tr_transforms, params.get('num_threads'),
                                                       params.get("num_cached_per_thread"),
                                                      pin_memory=pin_memory)
-    batchgenerator_train.restart()
+    # batchgenerator_train.restart()
 
     val_transforms = []
     val_transforms.append(RemoveLabelTransform(-1, 0))
@@ -99,6 +99,6 @@ def get_minimal_augmentation(dataloader_train, dataloader_val, params=default_3D
     batchgenerator_val = MultiThreadedAugmenter(dataloader_val, val_transforms, params.get('num_threads'),
                                                       params.get("num_cached_per_thread"),
                                                      pin_memory=pin_memory)
-    batchgenerator_val.restart()
+    # batchgenerator_val.restart()
     return batchgenerator_train, batchgenerator_val
 
