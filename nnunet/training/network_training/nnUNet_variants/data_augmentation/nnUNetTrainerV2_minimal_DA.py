@@ -29,6 +29,7 @@ class nnUNetTrainerV2_Minimal_DataAugmentation(nnUNetTrainerV2):
         # important because we need to know in validation and inference that we did not mirror in training
         self.data_aug_params["do_mirror"] = False
         self.data_aug_params["mirror_axes"] = tuple()
+        self.data_aug_params["num_threads"] = 20
 
     # def get_basic_generators(self):
     #     self.load_dataset()
