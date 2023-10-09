@@ -63,8 +63,8 @@ class nnUNetTrainerV2BraTSRegions_BN(nnUNetTrainerV2):
             self.network.cuda()
         self.network.inference_apply_nonlin = torch.nn.Softmax(1)
 
-class nnUNetTrainerV2BraTSRegions_BN_lucy_small_nnunet(nnUNetTrainerV2_Minimal_DataAugmentation):
-# class nnUNetTrainerV2BraTSRegions_BN_lucy_small_nnunet(nnUNetTrainerV2):
+# class nnUNetTrainerV2BraTSRegions_BN_lucy_small_nnunet(nnUNetTrainerV2_Minimal_DataAugmentation):
+class nnUNetTrainerV2BraTSRegions_BN_lucy_small_nnunet(nnUNetTrainerV2):
     def initialize_network(self):
         if self.threeD:
             conv_op = nn.Conv3d
