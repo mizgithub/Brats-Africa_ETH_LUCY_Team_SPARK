@@ -31,27 +31,27 @@ class nnUNetTrainerV2_Minimal_DataAugmentation(nnUNetTrainerV2):
         self.data_aug_params["mirror_axes"] = tuple()
         self.data_aug_params["num_threads"] = 20
 
-    # def get_basic_generators(self):
-    #     self.load_dataset()
-    #     self.do_split()
+    def get_basic_generators(self):
+        self.load_dataset()
+        self.do_split()
 
-    #     if self.threeD:
-    #         dl_tr = DataLoader3D(self.dataset_tr, self.patch_size, self.patch_size, self.batch_size,
-    #                              False, oversample_foreground_percent=self.oversample_foreground_percent
-    #                              , pad_mode="constant", pad_sides=self.pad_all_sides)
-    #         dl_val = DataLoader3D(self.dataset_val, self.patch_size, self.patch_size, self.batch_size, False,
-    #                               oversample_foreground_percent=self.oversample_foreground_percent,
-    #                               pad_mode="constant", pad_sides=self.pad_all_sides)
-    #     else:
-    #         dl_tr = DataLoader2D(self.dataset_tr, self.patch_size, self.patch_size, self.batch_size,
-    #                              transpose=self.plans.get('transpose_forward'),
-    #                              oversample_foreground_percent=self.oversample_foreground_percent
-    #                              , pad_mode="constant", pad_sides=self.pad_all_sides)
-    #         dl_val = DataLoader2D(self.dataset_val, self.patch_size, self.patch_size, self.batch_size,
-    #                               transpose=self.plans.get('transpose_forward'),
-    #                               oversample_foreground_percent=self.oversample_foreground_percent,
-    #                               pad_mode="constant", pad_sides=self.pad_all_sides)
-    #     return dl_tr, dl_val
+        if self.threeD:
+            dl_tr = DataLoader3D(self.dataset_tr, self.patch_size, self.patch_size, self.batch_size,
+                                 False, oversample_foreground_percent=self.oversample_foreground_percent
+                                 , pad_mode="constant", pad_sides=self.pad_all_sides)
+            dl_val = DataLoader3D(self.dataset_val, self.patch_size, self.patch_size, self.batch_size, False,
+                                  oversample_foreground_percent=self.oversample_foreground_percent,
+                                  pad_mode="constant", pad_sides=self.pad_all_sides)
+        else:
+            dl_tr = DataLoader2D(self.dataset_tr, self.patch_size, self.patch_size, self.batch_size,
+                                 transpose=self.plans.get('transpose_forward'),
+                                 oversample_foreground_percent=self.oversample_foreground_percent
+                                 , pad_mode="constant", pad_sides=self.pad_all_sides)
+            dl_val = DataLoader2D(self.dataset_val, self.patch_size, self.patch_size, self.batch_size,
+                                  transpose=self.plans.get('transpose_forward'),
+                                  oversample_foreground_percent=self.oversample_foreground_percent,
+                                  pad_mode="constant", pad_sides=self.pad_all_sides)
+        return dl_tr, dl_val
 
     def initialize(self, training=True, force_load_plans=False):
         if not self.was_initialized:
