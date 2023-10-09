@@ -675,9 +675,9 @@ if __name__ == "__main__":
     """
 
     task_name = "Task500_BraTS2021"
-    downloaded_data_dir = "/content/Brats-Africa2023/data/training"
-    downloaded_data_dir_val = "/content/Brats-Africa2023/data/validation"
-    result_dir = "content/Task500_BraTSAfrica2023/"
+    downloaded_data_dir = "/kaggle/working/dataset/dataset-v2/training"
+    downloaded_data_dir_val = "/kaggle/working/dataset/dataset-v2/validation"
+    result_dir = "../working/Task500_BraTSAfrica2023/"
 
     target_base = join(nnUNet_raw_data, task_name)
     target_imagesTr = join(target_base, "imagesTr")
