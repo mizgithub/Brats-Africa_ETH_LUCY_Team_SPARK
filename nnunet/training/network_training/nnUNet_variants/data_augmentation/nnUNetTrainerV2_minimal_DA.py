@@ -94,11 +94,13 @@ class nnUNetTrainerV2_Minimal_DataAugmentation(nnUNetTrainerV2):
                         "INFO: Not unpacking data! Training may be slow due to that. Pray you are not using 2d or you "
                         "will wait all winter for your model to finish!")
 
+                print("getting augmented data")
                 self.tr_gen, self.val_gen = get_minimal_augmentation(self.dl_tr, self.dl_val,
                                                                 params=self.data_aug_params,
                                                                 deep_supervision_scales=self.deep_supervision_scales,
                                                                 pin_memory=self.pin_memory)
 
+                print("done")
                 self.print_to_log_file("TRAINING KEYS:\n %s" % (str(self.dataset_tr.keys())),
                                        also_print_to_console=False)
                 self.print_to_log_file("VALIDATION KEYS:\n %s" % (str(self.dataset_val.keys())),
